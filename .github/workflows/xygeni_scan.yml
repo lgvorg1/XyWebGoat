@@ -92,14 +92,6 @@ jobs:
           fetch-depth: '0'
 
 
-      # Runs a single command using the runners shell
-      - name: Git Log
-        run: git log
-
-      # Runs a single command using the runners shell
-      - name: Cat pr.yml 
-        run: cat README.md
-
       # Runs a set of commands using the runners shell 
       - name: Download Xygeni Scanner 
         run: |
@@ -111,13 +103,13 @@ jobs:
           cat ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml | grep changeTypesToConsider
           sed -i 's/changeTypesToConsider: M/changeTypesToConsider: AM/g' ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml
           cat ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml | grep changeTypesToConsider
-          cat ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml 
+          
           
       # Runs a set of commands using the runners shell
       - name: Execution Xygeni Scanner (vuln)
         run: |
           echo Executing Xygeni scan ....    
           
-          ${GITHUB_WORKSPACE}/scanner/xygeni scan  --never-fail  -f none --include-collaborators --run="inventory,misconf,codetamper,deps,suspectdeps,secrets,compliance,iac" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/**
+          ${GITHUB_WORKSPACE}/scanner/xygeni scan  --never-fail  -f none --include-collaborators --run="inventory,misconf,codetamper,deps,suspectdeps,secrets,compliance,iac,malware" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/**
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
